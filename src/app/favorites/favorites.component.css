@@ -1,0 +1,18 @@
+.favoritesTable
+{
+    margin-bottom: 0px;
+}
+.trash:hover
+{
+    cursor: pointer;
+}
+.table-responsive
+{
+    border-radius: 15px !important;
+}
+.greenText
+{
+    color: #6ef4d9;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}

@@ -1,0 +1,26 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
+html, body { height: 100%; }
+body 
+{ 
+    background: url("/assets/background.jpg");
+    font-family: Georgia, serif;
+    background-size: cover;
+    margin: 0;  
+    color: white;
+}
+#category
+{
+    appearance: menulist !important;
+}
+
+.carousel-indicators
+{
+display: none;
+}
+.noResultsFound
+{
+    background-color: white;
+    color: red;
+    border-radius: 15px;
+}
