@@ -4,7 +4,6 @@ Points to remember:
 1. Social Media Icons
 3. Responsive design implementation.
 4. Backend handling of incomplete data.
-5. Responsive back button and tab heading padding. *
 6. Navbar. *
 */
 import { Component, OnInit, ViewEncapsulation, Renderer2, Inject } from '@angular/core';

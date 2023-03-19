@@ -140,14 +140,12 @@
                     <label (click)="onSubmit()">Back</label>
                 </div>
                 
-                <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="text-center col-md-10 tabsHeader">
+                <div class="row" class="eventHeader">
+                    <div class="text-center tabsHeader">
                         <h3 *ngIf="eventDetails.eventName">{{eventDetails.eventName}} 
                             <span (click)="switchFavorite(eventDetails.eventId)" [ngStyle]="{'color': favoriteColor}" id="favorite" class="material-icons heart-border">{{favoriteText}}</span>
                         </h3>
                     </div>
-                    <div class="col-md-1"></div>
                 </div>
                 
                 <mat-tab-group mat-align-tabs="center" color="primary">

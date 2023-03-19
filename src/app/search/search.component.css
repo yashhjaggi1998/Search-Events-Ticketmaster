@@ -73,9 +73,16 @@
 {
     width:  100%;
 }
-.mat-mdc-tab-label-container
+.mat-mdc-tab-header
 {
     background-color: #189d8d !important;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.mdc-tab
+{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
 }
 .mat-mdc-tab-header-pagination
 {
@@ -83,7 +90,7 @@
 }
 @media screen and (min-width: 600px) 
 {
-    .mat-mdc-tab-list
+    .mat-mdc-tab-header
     {
         padding-right: 20%;
         padding-left: 20%;
@@ -104,7 +111,7 @@ mat-spinner.mat-mdc-progress-spinner
 }
 #backButton
 {
-    padding: 1vw 1vw 1vw 1vw;
+    padding: 10px 10px 10px 10px;
 }
 #backButton label
 {
@@ -120,9 +127,9 @@ mat-spinner.mat-mdc-progress-spinner
     font-size: 15px;
     vertical-align: middle;
 }
-.tabsHeader
+.eventHeader
 {
-    padding-bottom: 2vw;
+    padding: 10px 10px 10px 10px;  
 }
 .heart-border
 {
