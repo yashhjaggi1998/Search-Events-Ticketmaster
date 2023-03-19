@@ -44,7 +44,7 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     MatAutocompleteModule,
     RouterModule.forRoot([
-      {path: '', component: SearchComponent},
+      {path: 'search', component: SearchComponent},
       {path: 'favorites', component: FavoritesComponent},
     ]),
   ],

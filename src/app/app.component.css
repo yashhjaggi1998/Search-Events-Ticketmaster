@@ -1,0 +1,30 @@
+.navbar-inverse
+{
+    overflow: hidden;
+    background-color: #000;
+    border-color: #080808;
+    margin-top: 5px;
+}
+.navbar-right
+{
+    float: right !important;
+}
+.navbar-inverse a 
+{
+    float: left;
+    color: white;
+    text-align: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-decoration: none;
+    line-height: 20px;
+}
+.activeButtonFavorites, .activeButtonSearch 
+{
+    border: solid 2px white;
+    border-radius: 15px;
+    color: white;
+}
+  
