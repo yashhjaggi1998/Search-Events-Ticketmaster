@@ -40,7 +40,6 @@ function submitForm(location)
 }
 function shareFBPost()
 {
-	console.log("FB");
 	FB.ui( {
 			display: 'popup',
 			method: 'share',

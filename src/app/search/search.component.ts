@@ -1,10 +1,10 @@
-//app.component.ts
 /*
 Points to remember:
 1. Social Media Icons
-2. Responsive design implementation.
-3. Backend handling of incomplete data.
-4. Artists/Tab no results available styling improve.
+2. Favorite Icon on separate line issue.
+3. Go through piaza posts.
+4. Go through grading guidelines.
+5. Backend handling of incomplete data.
 */
 import { Component, OnInit, ViewEncapsulation, Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
