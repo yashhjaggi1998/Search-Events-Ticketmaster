@@ -182,16 +182,16 @@
                             <div class="row">
                                 <div class="form-group col-md-12 text-center" *ngIf="eventDetails.ticketURL">
                                     
-                                    <label>Share on: </label>
-                                    
-                                  
-                                    <a target="_blank" class="twitter" [href]="'https://twitter.com/intent/tweet?text=Check ' + eventDetails.eventName + ' on Ticketmaster.%0A' + eventDetails.ticketURL"><i class="bi bi-twitter"></i></a>
-                                    
-                                    <a target="_blank" onclick="shareFBPost();" class="facebook">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 32 32">
-                                            <path fill="#1651d0" d="M26.67 4H5.33A1.34 1.34 0 0 0 4 5.33v21.34A1.34 1.34 0 0 0 5.33 28h11.49v-9.28H13.7v-3.63h3.12v-2.67c0-3.1 1.89-4.79 4.67-4.79c.93 0 1.86 0 2.79.14V11h-1.91c-1.51 0-1.8.72-1.8 1.77v2.31h3.6l-.47 3.63h-3.13V28h6.1A1.34 1.34 0 0 0 28 26.67V5.33A1.34 1.34 0 0 0 26.67 4Z"/>
-                                        </svg>
-                                    </a>
+                                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+                                        Share on:
+                                        <a target="_blank" class="twitter" [href]="'https://twitter.com/intent/tweet?text=Check ' + eventDetails.eventName + ' on Ticketmaster.%0A' + eventDetails.ticketURL">
+                                            <img src="../../assets/twitter_logo.svg" alt="" srcset=""/>
+                                        </a>
+                                        
+                                        <a target="_blank" onclick="shareFBPost();" class="facebook">
+                                            <img src="../../assets/facebook_logo.svg" alt="" srcset=""/>
+                                        </a>
+                                    </div>
                                 
                                 </div>
                             </div>
@@ -221,7 +221,7 @@
                                                         <div class="container row text-center" style="padding-top: 2vw;">
                                                             <div class="col-md-3">
                                                                 <img style="border-radius: 20vw" src={{artist.imageURL}} class="img-fluid">
-                                                                <h5 class="greenText" style="text-transform: uppercase; font-weight: bold;">{{artist.name}}</h5>
+                                                                <h5 class="greenText" style="font-weight: bold;">{{artist.name}}</h5>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="artistInfo">
@@ -251,7 +251,7 @@
                                                         </div>
                                                         <div class="row" style="padding-bottom: 2vw;">
                                                             <div *ngIf="artist.coverImages[0]">
-                                                                <label class="greenText albumText">Albums featuring <span  style="text-transform: uppercase;">{{artist.name}}</span></label>
+                                                                <label class="greenText albumText">Albums featuring {{artist.name}}</label>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <img class="img-fluid albumImg" src={{artist.coverImages[0]}} alt="Random first slide">
