@@ -19,7 +19,7 @@
                             <input type="text" id="keyword" class="form-control" [(ngModel)]="selectedKeyword" [matAutocomplete]="autoVar" [formControl]="KeywordCtrl" required>
                     
                             <!-- mat-autocomplete takes care of displaying the dropdown which suggests. ng-option is the optin tag of the dropdown-->
-                            <mat-autocomplete #autoVar="matAutocomplete" (optionSelected)="onSelected()" [panelWidth]="400" [displayWith]="displayWith"> 
+                            <mat-autocomplete #autoVar="matAutocomplete" (optionSelected)="onSelected()" [displayWith]="displayWith"> 
                                 <mat-option *ngIf="isLoading" class="is-loading">
                                     <mat-spinner [diameter]="20"></mat-spinner>
                                 </mat-option>
@@ -171,7 +171,7 @@
                                     <label *ngIf="eventDetails.priceRanges" class="eventsText">{{eventDetails.priceRanges}} USD</label>
                                     
                                     <h5 *ngIf="eventDetails.ticketStatus">Ticket Status</h5>
-                                    <label *ngIf="eventDetails.ticketStatus" class="eventsText" style="padding: 10px 10px 10px 10px; border-radius: 10px;" [ngStyle]="{'background-color': eventDetails.ticketStatusColor}">{{eventDetails.ticketStatus}}</label>
+                                    <label *ngIf="eventDetails.ticketStatus" class="eventsText" style="padding: 5px 15px 5px 15px; border-radius: 10px;" [ngStyle]="{'background-color': eventDetails.ticketStatusColor}">{{eventDetails.ticketStatus}}</label>
 
                                     <h5 *ngIf="eventDetails.ticketURL">Buy Ticket At:</h5>
                                     <a href={{eventDetails.ticketURL}} class="eventsText" *ngIf="eventDetails.ticketURL">Ticketmaster</a>
@@ -202,7 +202,7 @@
                     <mat-tab label="Artists/Teams">
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div *ngIf="noArtistsFound" class="col-md-8" style="padding-left: 20px; padding-right: 20px;">
+                            <div *ngIf="noArtistsFound" class="col-md-8" style="padding-left: 50px; padding-right: 50px;">
                                 <div class="noResultsFound text-center">
                                     <h4>No music related artist details to show</h4>
                                 </div>
@@ -221,10 +221,10 @@
                                                         <div class="container row text-center" style="padding-top: 2vw;">
                                                             <div class="col-md-3">
                                                                 <img style="border-radius: 20vw" src={{artist.imageURL}} class="img-fluid">
-                                                                <h5 class="greenText">{{artist.name}}</h5>
+                                                                <h5 class="greenText" style="text-transform: uppercase; font-weight: bold;">{{artist.name}}</h5>
                                                             </div>
                                                             <div class="col-md-3">
-                                                                <div class="pfs">
+                                                                <div class="artistInfo">
                                                                     <h5 class="greenText">Popularity</h5>
                                                                     <div class="text-center spinner">
                                                                         <mat-progress-spinner [diameter]="40" color="warn" mode="determinate" value={{artist.popularity}}></mat-progress-spinner>
@@ -250,8 +250,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="row" style="padding-bottom: 2vw;">
-                                                            <div>
-                                                                <label class="greenText albumText">Albums featuring {{artist.name}}</label>
+                                                            <div *ngIf="artist.coverImages[0]">
+                                                                <label class="greenText albumText">Albums featuring <span  style="text-transform: uppercase;">{{artist.name}}</span></label>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <img class="img-fluid albumImg" src={{artist.coverImages[0]}} alt="Random first slide">
@@ -278,7 +278,7 @@
                     <!--Venue Tab-->
                     <mat-tab label="Venue" *ngIf="isVenueDataFound">
                         <div class="container text-center venuesTab">
-                            <div class="row" id="venue">
+                            <div class="row" id="venue" style="padding-bottom: 20px;">
                                 <div class="col-md-6 text-center">
                                     <h5 *ngIf="venueDetails.venueName">Name</h5>
                                     <label *ngIf="venueDetails.venueName">{{venueDetails.venueName}}</label>
@@ -343,23 +343,24 @@
         <div class="form-group col-md-2"></div>
     </div>
     <!-- end of tabs section --> 
-</div>        
 
-<div class="modal container" tabindex="-1" role="dialog" [ngStyle]="{'display': modalDisplay}">
-    <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4 modalContent">
-            <h1>Event Venue</h1>
-            <hr>
-            <div class="my-google-map">
-                <google-map [options]="mapOptions">
-                    <map-marker [position]="marker.getPosition()!"></map-marker>
-                </google-map>
+            
+    <div class="modal container" tabindex="-1" role="dialog" [ngStyle]="{'display': modalDisplay}">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 modalContent container">
+                <h1>Event Venue</h1>
+                <hr>
+                <div class="my-google-map">
+                    <google-map [options]="mapOptions">
+                        <map-marker [position]="marker.getPosition()!"></map-marker>
+                    </google-map>
+                </div>
+                <div class="modalClose">
+                    <button class="btn btn-dark" (click)="closeModal()">Close</button>
+                </div>
             </div>
-            <div class="modalClose">
-                <button class="btn btn-dark" (click)="closeModal()">Close</button>
-            </div>
+            <div class="col-md-4"></div>
         </div>
-        <div class="col-md-4"></div>
     </div>
 </div>

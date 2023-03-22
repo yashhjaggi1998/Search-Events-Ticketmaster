@@ -132,7 +132,9 @@ export class SearchComponent implements OnInit
 		element.style.overflow = 'hidden';
 		element.style.height ='40px';
 	}
-	switchFavorite(selectedEventId: any)
+
+
+	switchFavorite(selectedEventId: string)
 	{
 		const favorite = document.getElementById('favorite') as HTMLInputElement;
 	
@@ -147,6 +149,31 @@ export class SearchComponent implements OnInit
 			var favorites = JSON.parse(localStorage.getItem("favorite") || '[]');
 			favorites.push(this.eventDetails);
 			localStorage.setItem('favorite', JSON.stringify(favorites) );
+		}
+		else
+		{
+			//raise alert
+			alert("Removed from Favorites!");
+
+			//make UI changes
+			this.favoriteText = "favorite_border";
+			this.favoriteColor = "black";
+
+			//remove from localStorage
+			var favoritesArray: any = [];
+			favoritesArray = JSON.parse(localStorage.getItem('favorite') || '[]');
+			
+			console.log("Favorites Array: " + favoritesArray);
+			for(let i=0; i<favoritesArray.length; i++)
+			{
+				if(favoritesArray[i]['eventId'] == selectedEventId)
+				{
+					favoritesArray.splice(i, 1);
+					break;
+				}
+			}
+			
+			localStorage.setItem('favorite', JSON.stringify(favoritesArray));
 		}
 	}
 	
@@ -253,6 +280,11 @@ export class SearchComponent implements OnInit
 				{
 					this.favoriteText = "favorite";
 					this.favoriteColor = "red";
+				}
+				else
+				{
+					this.favoriteText = "favorite_border";
+					this.favoriteColor = "black";
 				}
 			
 

@@ -10,7 +10,7 @@
 }
 .inputLabel
 {
-    color: #6495ED;
+    color: #64d2ed;
 }
 #hDivider
 {
@@ -83,6 +83,11 @@
 {
     padding-left: 0px !important;
     padding-right: 0px !important;
+}
+.mat-mdc-tab-body
+{
+    padding-top: 10px !important;
+    padding-bottom: 20px !important;
 }
 .mat-mdc-tab-header-pagination
 {
@@ -163,7 +168,7 @@ mat-spinner.mat-mdc-progress-spinner
 {
     padding-bottom: 15px;
 }
-.pfs
+.artistInfo
 {
     padding-top: 3vw;
 }
@@ -212,7 +217,9 @@ mat-spinner.mat-mdc-progress-spinner
 .modalContent
 {
     background-color: white;
-    color: black
+    color: black;
+    border-radius: 10px;
+    padding-top: 20px;
 }
 .modalClose
 {
@@ -222,11 +229,6 @@ mat-spinner.mat-mdc-progress-spinner
 .map-container
 {
     width: 100% !important;
-}
-.venuesTab
-{
-    padding-top: 1vw;
-    padding-bottom: 1vw;
 }
 .mapsButton
 {
