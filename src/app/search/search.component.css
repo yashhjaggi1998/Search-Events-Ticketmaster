@@ -214,6 +214,10 @@ mat-spinner.mat-mdc-progress-spinner
     cursor: pointer;
 }
 
+.modalRow
+{
+    margin-top: 20px;
+}
 .modalContent
 {
     background-color: white;

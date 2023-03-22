@@ -125,12 +125,11 @@
     </div>
     <!--End of results table-->
 
-
+    <!-- Tabs Section-->
     <div class="row">
 
         <div class="form-group col-md-2"></div>
         
-        <!-- Tabs Section-->
         <div class="form-group col-md-8">
             
             <div class="tabsDiv" *ngIf="isTabsDataFound">
@@ -182,6 +181,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-12 text-center" *ngIf="eventDetails.ticketURL">
+                                    
                                     <label>Share on: </label>
                                     
                                   
@@ -236,14 +236,14 @@
                                                             </div>
                                                             
                                                             <div class="col-md-3">
-                                                                <div class="pfs">
+                                                                <div class="artistInfo">
                                                                     <h5 class="greenText">Followers</h5>
                                                                     <label>{{artist.followersCount}}</label>
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="col-md-3">
-                                                                <div class="pfs">
+                                                                <div class="artistInfo">
                                                                     <h5 class="greenText">Spotify Link</h5>
                                                                     <a style="color: green; font-size: 45px;" href={{artist.spotifyURL}} class="bi bi-spotify"></a>
                                                                 </div>
@@ -344,23 +344,29 @@
     </div>
     <!-- end of tabs section --> 
 
-            
-    <div class="modal container" tabindex="-1" role="dialog" [ngStyle]="{'display': modalDisplay}">
-        <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4 modalContent container">
-                <h1>Event Venue</h1>
-                <hr>
-                <div class="my-google-map">
-                    <google-map [options]="mapOptions">
-                        <map-marker [position]="marker.getPosition()!"></map-marker>
-                    </google-map>
-                </div>
-                <div class="modalClose">
-                    <button class="btn btn-dark" (click)="closeModal()">Close</button>
+</div>
+
+<div class="modal container" tabindex="-1" role="dialog" [ngStyle]="{'display': modalDisplay}">
+    <div class="row modalRow">
+        <div class="col-md-4"></div>
+        
+        <div class="col-md-4 container">
+            <div class="container">
+                <div class="modalContent container">
+                    <h3>Event Venue</h3>
+                    <hr>
+                    <div class="my-google-map">
+                        <google-map [options]="mapOptions">
+                            <map-marker [position]="marker.getPosition()!"></map-marker>
+                        </google-map>
+                    </div>
+                    <div class="modalClose">
+                        <button class="btn btn-dark" (click)="closeModal()">Close</button>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4"></div>
         </div>
+        
+        <div class="col-md-4"></div>
     </div>
 </div>
