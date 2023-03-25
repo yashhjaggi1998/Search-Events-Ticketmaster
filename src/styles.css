@@ -4,8 +4,9 @@ html, body { height: 100%; }
 body 
 { 
     background: url("/assets/background.jpg");
-    font-family: Georgia, serif;
+    
     background-size: cover;
+    background-position: center;
     margin: 0;  
     color: white;
 }

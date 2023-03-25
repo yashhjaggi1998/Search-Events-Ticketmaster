@@ -37,7 +37,7 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <small><label for="distance" class="inputLabel">Distance</label></small>
-                            <input type="number" (ngModel)="distance" class="form-control" id="distance" placeholder="10">
+                            <input type="number" value="10" (ngModel)="distance" class="form-control" id="distance">
                         </div>
                         <div class="form-group col-md-5">
                             <small><label for="category" class="control-label inputLabel">Category</label></small>
@@ -99,7 +99,7 @@
             </div>
             
             <div class="table-responsive">
-                <table *ngIf="isEventsDataFound" class="table table-dark table-striped resultsTable">
+                <table *ngIf="isEventsDataFound" class="table table-dark table-striped resultsTable" id="resultsTable">
                     <thead>
                         <tr>
                             <th scope="col">Date/Time</th>
@@ -173,7 +173,7 @@
                                     <label *ngIf="eventDetails.ticketStatus" class="eventsText" style="padding: 5px 15px 5px 15px; border-radius: 10px;" [ngStyle]="{'background-color': eventDetails.ticketStatusColor}">{{eventDetails.ticketStatus}}</label>
 
                                     <h5 *ngIf="eventDetails.ticketURL">Buy Ticket At:</h5>
-                                    <a href={{eventDetails.ticketURL}} class="eventsText" *ngIf="eventDetails.ticketURL">Ticketmaster</a>
+                                    <a href={{eventDetails.ticketURL}} target="_blank" class="eventsText" *ngIf="eventDetails.ticketURL">Ticketmaster</a>
                                 </div>
                                 <div *ngIf="eventDetails.seatMap" class="col-md-6 text-center">
                                     <img src={{eventDetails.seatMap}} class="img-fluid" style="padding-top: 20px;">
@@ -223,7 +223,7 @@
                                                                 <img style="border-radius: 20vw" src={{artist.imageURL}} class="img-fluid">
                                                                 <h5 class="greenText" style="font-weight: bold;">{{artist.name}}</h5>
                                                             </div>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3" style="margin-bottom: 20px;">
                                                                 <div class="artistInfo">
                                                                     <h5 class="greenText">Popularity</h5>
                                                                     <div class="text-center spinner">
@@ -235,17 +235,17 @@
                                                                 </div>
                                                             </div>
                                                             
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3" style="margin-bottom: 20px;">
                                                                 <div class="artistInfo">
                                                                     <h5 class="greenText">Followers</h5>
                                                                     <label>{{artist.followersCount}}</label>
                                                                 </div>
                                                             </div>
                                                             
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-3" style="margin-bottom: 20px;">
                                                                 <div class="artistInfo">
                                                                     <h5 class="greenText">Spotify Link</h5>
-                                                                    <a style="color: green; font-size: 45px;" href={{artist.spotifyURL}} class="bi bi-spotify"></a>
+                                                                    <a style="color: green; font-size: 45px;" target="_blank" href={{artist.spotifyURL}} class="bi bi-spotify"></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -306,12 +306,12 @@
 
                                     <h5 *ngIf="venueDetails.venueGeneralRule">General Rule</h5>
                                     <p id="generalRule" *ngIf="venueDetails.venueGeneralRule">{{venueDetails.venueGeneralRule}}</p>
-                                    <a *ngIf="showMoreGeneralrule && venueDetails.venueOpenHours" class="showMore" (click)="expand('generalRule')">Show More
+                                    <a *ngIf="showMoreGeneralrule && venueDetails.venueGeneralRule" class="showMore" (click)="expand('generalRule')">Show More
                                         <span class="material-icons" style="color: white; vertical-align: middle;">
                                             expand_more
                                         </span>
                                     </a>
-                                    <a *ngIf="!showMoreGeneralrule && venueDetails.venueOpenHours" class="showLess" (click)="collapse('generalRule')">Show Less
+                                    <a *ngIf="!showMoreGeneralrule && venueDetails.venueGeneralRule" class="showLess" (click)="collapse('generalRule')">Show Less
                                         <span class="material-icons showLess" style="color: white; vertical-align: middle;">
                                             expand_less
                                         </span>
@@ -319,12 +319,12 @@
 
                                     <h5 *ngIf="venueDetails.venueChildRule">Child Rule</h5>
                                     <p id="childRule" *ngIf="venueDetails.venueChildRule">{{venueDetails.venueChildRule}}</p>
-                                    <a *ngIf="showMoreChildRule && venueDetails.venueOpenHours" class="showMore" (click)="expand('childRule')">Show More
+                                    <a *ngIf="showMoreChildRule && venueDetails.venueChildRule" class="showMore" (click)="expand('childRule')">Show More
                                         <span class="material-icons" style="color: white; vertical-align: middle;">
                                             expand_more
                                         </span>
                                     </a>
-                                    <a *ngIf="!showMoreChildRule && venueDetails.venueOpenHours" class="showLess" (click)="collapse('childRule')">Show Less
+                                    <a *ngIf="!showMoreChildRule && venueDetails.venueChildRule" class="showLess" (click)="collapse('childRule')">Show Less
                                         <span class="material-icons showLess" style="color: white; vertical-align: middle;">
                                             expand_less
                                         </span>

@@ -47,7 +47,7 @@ function shareFBPost()
 		}, function(response){});
 }
 
-/*function checkAutoDetect()
+function jsCheckAutoDetect()
 {
 	var autoDetectCheckBox = document.getElementById("autoDetectLocation");	
 	var locationObj = document.getElementById("location");		
@@ -55,13 +55,13 @@ function shareFBPost()
 	if(autoDetectCheckBox.checked)
 	{
 		locationObj.value = "";
-		locationObj.disabled = true;
+		//locationObj.disabled = true;
 		locationObj.required = false;
 	}
 	else
 	{
 		locationObj.value = "";
-		locationObj.disabled = false;
+		//locationObj.disabled = false;
 		locationObj.required = true;
 	}
-}*/
+}

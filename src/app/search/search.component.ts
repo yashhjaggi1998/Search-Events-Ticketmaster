@@ -1,10 +1,13 @@
 /*
 Points to remember:
-1. Social Media Icons
-2. Favorite Icon on separate line issue.
+1. Social Media Icons: Facebook not working on deployment.
+2. Deploy frontend on cloud.
 3. Go through piaza posts.
 4. Go through grading guidelines.
-5. Backend handling of incomplete data.
+5. Backend handling of incomplete data for eventstab, artists tab & venue tab.
+6. Change font family.
+7. Change vw to px.
+8. Order of artist display is to be checked.
 */
 import { Component, OnInit, ViewEncapsulation, Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -15,6 +18,8 @@ import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime, tap, switchMap, finalize, distinctUntilChanged, filter } from 'rxjs/operators';
 
 declare function formInit(): any;
+declare function ascendingSort(): any;
+declare function jsCheckAutoDetect(): any;
 declare function submitForm(location: any): any;
 
 const API_KEY = "e8067b53"
@@ -29,6 +34,7 @@ const API_KEY = "e8067b53"
 
 export class SearchComponent implements OnInit 
 {
+	baseURL = "https://ass8-events.uc.r.appspot.com";
 	events: any = [];
 	eventDetails: any;
 	venueDetails: any = [];
@@ -180,26 +186,24 @@ export class SearchComponent implements OnInit
 	checkAutoDetect()
 	{
 		const autoDetectCheckBox = document.getElementById('autoDetectLocation') as HTMLInputElement;
-		const locationObj = document.getElementById('location') as HTMLInputElement;
-
+		
 		
 		if(autoDetectCheckBox.checked)
 		{
-			locationObj.textContent = "";
+			jsCheckAutoDetect();
 			this.isLocationDisabled = true;
-			locationObj.required = false;
 		}
 		else
 		{
-			locationObj.textContent = "";
+			jsCheckAutoDetect();
 			this.isLocationDisabled = false;
-			locationObj.required = true;
 		}
 	}
 	clearForm()
 	{
 		this.initializeFlags();
 
+		//location field
 		const locationObj = document.getElementById('location') as HTMLInputElement;
 		locationObj.textContent = "";
 		this.isLocationDisabled = false;
@@ -221,8 +225,8 @@ export class SearchComponent implements OnInit
 		//reset these variables
 		this.artistsInfo = [];
 
-		var eventURL = "http://localhost:8000/eventDetails?id=" + id;
-		console.log(id);
+		var eventURL = this.baseURL + "/eventDetails?id=" + id;
+		//console.log(id);
 		this.getApiCall(eventURL)
 		.subscribe(RES =>
 			{
@@ -301,7 +305,7 @@ export class SearchComponent implements OnInit
 						this.isMusicRelated = true;
 						this.noArtistsFound = false;
 						artistCount++;
-						var artistURL = "http://localhost:8000/artistInfo?artist=" + encodeURIComponent(artist.artistName);
+						var artistURL = this.baseURL + "/artistInfo?artist=" + encodeURIComponent(artist.artistName);
 					
 						this.getApiCall(artistURL)
 						.subscribe(RES =>
@@ -326,7 +330,7 @@ export class SearchComponent implements OnInit
 		
 		
 		
-		var venueURL = "http://localhost:8000/venueDetails?venueName=" + encodeURIComponent(venueName);
+		var venueURL = this.baseURL + "/venueDetails?venueName=" + encodeURIComponent(venueName);
 		this.getApiCall(venueURL)
 		.subscribe(res =>
 			{
@@ -391,7 +395,7 @@ export class SearchComponent implements OnInit
 		
 		var loc = submitForm(location?.value);
 
-		var url = "http://localhost:8000/search?";
+		var url = this.baseURL + "/searchEvents?";
 		url += 'keyword=' + encodeURIComponent(this.selectedKeyword);
 		url += '&distance=' + distance?.value;
 		url += '&category=' + category?.value;
@@ -401,22 +405,45 @@ export class SearchComponent implements OnInit
 		this.getApiCall(url)
 		.subscribe(res =>
 			{
-				console.log(res);
-				
-				if('result' in res)
+				//console.log(res);
+				if('type' in res)
 				{
-					this.events = res.result;
-					//localStorage.setItem('allEvents', JSON.stringify(res));
-				}
-				if(this.events.length > 0)
-				{
-					this.isEventsDataFound = true;
-					this.noEventsDataFound = false;
-				}
-				else
-				{
-					this.noEventsDataFound = true;
-					this.isEventsDataFound = false;
+					if(res['type'] == 'error')
+					{
+						this.noEventsDataFound = true;
+						this.isEventsDataFound = false;
+					}
+					else
+					{
+						if('result' in res)
+							this.events = res.result;
+						
+						if(this.events.length > 0)
+						{
+							this.isEventsDataFound = true;
+							this.noEventsDataFound = false;
+
+							for(let i=0; i < this.events.length-1; i++)
+							{
+								for(let j = 0; j < this.events.length-i-1; j++)
+        						{
+									var x = this.events[j].date;
+									var y = this.events[j+1].date;
+									if( x > y)
+									{
+										var temp = this.events[j];
+										this.events[j] = this.events[j+1];
+										this.events[j+1] = temp;
+									}
+								}
+							}
+						}
+						else
+						{
+							this.noEventsDataFound = true;
+							this.isEventsDataFound = false;
+						}
+					}
 				}
 				
 			});
@@ -440,7 +467,7 @@ export class SearchComponent implements OnInit
 				this.filteredKeywords = [];
 				this.isLoading = true;
 			}),
-			switchMap(value => this.http.get('http://localhost:8000/suggest?keyword=' + value)
+			switchMap(value => this.http.get(this.baseURL + '/suggest?keyword=' + value)
 				.pipe(
 				finalize(() => {
 					this.isLoading = false
