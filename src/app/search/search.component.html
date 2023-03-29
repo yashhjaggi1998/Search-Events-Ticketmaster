@@ -150,8 +150,19 @@
                 <mat-tab-group mat-align-tabs="center" color="primary">
                     
                     <!--Events Tab-->
-                    <mat-tab label="Events" *ngIf="isEventDetailsDataFound">
-                        <div class="container">
+                    <mat-tab label="Events">
+
+                        <div class="row" *ngIf="noEventDetailsDataFound">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8" style="padding-left: 50px; padding-right: 50px;">
+                                <div class="noResultsFound text-center">
+                                    <h4>No event details to show</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+
+                        <div class="container" *ngIf="isEventDetailsDataFound">
                             <div class="row display-flex-center" id="events">
                                 <div class="col-md-6 text-center">
                                     <h5 *ngIf="eventDetails.eventDate">Date</h5>
@@ -188,7 +199,7 @@
                                             <img src="../../assets/twitter_logo.svg" alt="" srcset=""/>
                                         </a>
                                         
-                                        <a target="_blank" onclick="shareFBPost();" class="facebook">
+                                        <a target="_blank" class="facebook" [href]="'https://www.facebook.com/sharer/sharer.php?u=' + eventDetails.ticketURL + '&amp;src=sdkpreparse'">
                                             <img src="../../assets/facebook_logo.svg" alt="" srcset=""/>
                                         </a>
                                     </div>
@@ -245,7 +256,7 @@
                                                             <div class="col-md-3" style="margin-bottom: 20px;">
                                                                 <div class="artistInfo">
                                                                     <h5 class="greenText">Spotify Link</h5>
-                                                                    <a style="color: green; font-size: 45px;" target="_blank" href={{artist.spotifyURL}} class="bi bi-spotify"></a>
+                                                                    <a style="color: green; font-size: 35px;" target="_blank" href={{artist.spotifyURL}} class="bi bi-spotify"></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -276,8 +287,19 @@
                     </mat-tab>
 
                     <!--Venue Tab-->
-                    <mat-tab label="Venue" *ngIf="isVenueDataFound">
-                        <div class="container text-center venuesTab">
+                    <mat-tab label="Venue">
+
+                        <div class="row" *ngIf="noVenueDataFound">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8" style="padding-left: 50px; padding-right: 50px;">
+                                <div class="noResultsFound text-center">
+                                    <h4>No event details to show</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+
+                        <div class="container text-center venuesTab"  *ngIf="isVenueDataFound">
                             <div class="row" id="venue" style="padding-bottom: 20px;">
                                 <div class="col-md-6 text-center">
                                     <h5 *ngIf="venueDetails.venueName">Name</h5>

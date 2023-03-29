@@ -1,14 +1,3 @@
-/*
-Points to remember:
-1. Social Media Icons: Facebook not working on deployment.
-2. Deploy frontend on cloud.
-3. Go through piaza posts.
-4. Go through grading guidelines.
-5. Backend handling of incomplete data for eventstab, artists tab & venue tab.
-6. Change font family.
-7. Change vw to px.
-8. Order of artist display is to be checked.
-*/
 import { Component, OnInit, ViewEncapsulation, Renderer2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { FormControl } from '@angular/forms';
@@ -34,15 +23,18 @@ const API_KEY = "e8067b53"
 
 export class SearchComponent implements OnInit 
 {
-	baseURL = "https://ass8-events.uc.r.appspot.com";
+	baseURL = "https://ass8-events.uc.r.appspot.com/server";
+	//baseURL = "http://localhost:8080/server";
 	events: any = [];
 	eventDetails: any;
 	venueDetails: any = [];
 	isEventsDataFound = false;
 	isTabsDataFound = false;
 	isEventDetailsDataFound = false;
+	noEventDetailsDataFound = false;
 	isMusicRelated = false;
 	isVenueDataFound = false;
+	noVenueDataFound = false;
 	noEventsDataFound = false;
 	noArtistsFound = false;
 	artistsInfo: any = [];
@@ -76,8 +68,10 @@ export class SearchComponent implements OnInit
 		this.isEventsDataFound = false;
 		this.isTabsDataFound = false;
 		this.isEventDetailsDataFound = false;
+		this.noEventDetailsDataFound = false; 
 		this.isMusicRelated = false;
 		this.isVenueDataFound = false;
+		this.noVenueDataFound = false;
 		this.noEventsDataFound = false;
 		this.noArtistsFound = false;
 
@@ -215,6 +209,7 @@ export class SearchComponent implements OnInit
 
 	disableArrows(show: boolean)
 	{
+		console.log("DA: " + show);
 		if(!show)
 			this.carouselConfig.showNavigationArrows = true;
 		else
@@ -225,107 +220,134 @@ export class SearchComponent implements OnInit
 		//reset these variables
 		this.artistsInfo = [];
 
+		this.isTabsDataFound = true; //table make display
+		this.isEventsDataFound = false;	//results Table no display
+		
+
 		var eventURL = this.baseURL + "/eventDetails?id=" + id;
-		//console.log(id);
+		
 		this.getApiCall(eventURL)
 		.subscribe(RES =>
 			{
 				console.log("Event Details" + RES);
-				this.eventDetails = RES;
-				let artists = JSON.parse(JSON.stringify(RES)).eventArtist;
-				let artistString = '';
-				for(let i=0; i < artists.length; i++)
-				{
-					if(i == artists.length - 1)
-						artistString = artistString + artists[i].artistName;
+				if('type' in RES && 'message' in RES)
+				{	
+					this.isEventDetailsDataFound = true;
+					if(RES.type == 'error')
+					{
+						this.noEventDetailsDataFound = true;
+						this.isEventDetailsDataFound = false;
+
+						//this.disableArrows(true);
+					}
 					else
-						artistString = artistString + artists[i].artistName + " | ";
-				}
-				
-				if(this.eventDetails.ticketStatus != '')
-				{
-					if(this.eventDetails.ticketStatus == 'onsale')
 					{
-						this.eventDetails.ticketStatusColor = "green";
-						this.eventDetails.ticketStatus= "On Sale";
-					}
-					else if(this.eventDetails.ticketStatus == 'offsale')
-					{
-						this.eventDetails.ticketStatusColor = "red";
-						this.eventDetails.ticketStatus = "Off Sale";
-					}
-					else if(this.eventDetails.ticketStatus == 'postponed')
-					{
-						this.eventDetails.ticketStatusColor = "orange";
-						this.eventDetails.ticketStatus = "Postponed";
-					}
-					else if(this.eventDetails.ticketStatus == 'cancelled')
-					{
-						this.eventDetails.ticketStatusColor = "black";
-						this.eventDetails.ticketStatus = "Cancelled";
-					}
-					else if(this.eventDetails.ticketStatus ==  'rescheduled')
-					{
-						this.eventDetails.ticketStatusColor = "orange";
-						this.eventDetails.ticketStatus = "Rescheduled";
-					}
-				}
-				
-				this.eventDetails['artistString'] = artistString;	
-				
-				const favorite = document.getElementById('favorite') as HTMLInputElement;
-				var isAlreadySelected = false;
-				var favorites = JSON.parse(localStorage.getItem("favorite") || '[]');
-				for(let fav of favorites)
-					if(fav?.eventId == this.eventDetails?.eventId)
-						isAlreadySelected = true;
-				
-				if(isAlreadySelected)
-				{
-					this.favoriteText = "favorite";
-					this.favoriteColor = "red";
-				}
-				else
-				{
-					this.favoriteText = "favorite_border";
-					this.favoriteColor = "black";
-				}
-			
-
-				//setting flags
-				this.isEventsDataFound = false;
-				this.isTabsDataFound = true;
-				this.isEventDetailsDataFound = true;
-				
-				let artistCount = 0;
-				for(let artist of this.eventDetails.eventArtist)
-				{
-					if(artist.isMusicRelated)
-					{
-						this.isMusicRelated = true;
-						this.noArtistsFound = false;
-						artistCount++;
-						var artistURL = this.baseURL + "/artistInfo?artist=" + encodeURIComponent(artist.artistName);
-					
-						this.getApiCall(artistURL)
-						.subscribe(RES =>
+						this.isEventDetailsDataFound = true;
+						this.noEventDetailsDataFound = false;
+						
+						this.eventDetails = RES['message'];
+						
+						//get artists/team string ready
+						let artists = JSON.parse(JSON.stringify(RES)).message.eventArtist;
+						let artistString = '';
+						for(let i=0; i < artists.length; i++)
+						{
+							if(i == artists.length - 1)
+								artistString = artistString + artists[i].artistName;
+							else
+								artistString = artistString + artists[i].artistName + " | ";
+						}
+						
+						//get onsale data ready
+						if(this.eventDetails.ticketStatus != '')
+						{
+							if(this.eventDetails.ticketStatus == 'onsale')
 							{
-								console.log(RES);
-								if(JSON.parse(JSON.stringify(RES)).type != 'noRecords')
-									this.artistsInfo.push(JSON.parse(JSON.stringify(RES)).message);
+								this.eventDetails.ticketStatusColor = "green";
+								this.eventDetails.ticketStatus= "On Sale";
+							}
+							else if(this.eventDetails.ticketStatus == 'offsale')
+							{
+								this.eventDetails.ticketStatusColor = "red";
+								this.eventDetails.ticketStatus = "Off Sale";
+							}
+							else if(this.eventDetails.ticketStatus == 'postponed')
+							{
+								this.eventDetails.ticketStatusColor = "orange";
+								this.eventDetails.ticketStatus = "Postponed";
+							}
+							else if(this.eventDetails.ticketStatus == 'cancelled')
+							{
+								this.eventDetails.ticketStatusColor = "black";
+								this.eventDetails.ticketStatus = "Cancelled";
+							}
+							else if(this.eventDetails.ticketStatus ==  'rescheduled')
+							{
+								this.eventDetails.ticketStatusColor = "orange";
+								this.eventDetails.ticketStatus = "Rescheduled";
+							}
+						}
+						
+						this.eventDetails['artistString'] = artistString;	
+						
+						//get favorite icon ready
+						const favorite = document.getElementById('favorite') as HTMLInputElement;
+						var isAlreadySelected = false;
+						var favorites = JSON.parse(localStorage.getItem("favorite") || '[]');
+						for(let fav of favorites)
+							if(fav?.eventId == this.eventDetails?.eventId)
+								isAlreadySelected = true;
+						
+						if(isAlreadySelected)
+						{
+							this.favoriteText = "favorite";
+							this.favoriteColor = "red";
+						}
+						else
+						{
+							this.favoriteText = "favorite_border";
+							this.favoriteColor = "black";
+						}
+					
 
-							});
+						//populate spotify artist information.
+						let artistCount = 0;
+						for(let artist of this.eventDetails.eventArtist)
+						{
+							if(artist.isMusicRelated)
+							{
+								this.isMusicRelated = true;
+								this.noArtistsFound = false;
+								artistCount++;
+								var artistURL = this.baseURL + "/artistInfo?artist=" + encodeURIComponent(artist.artistName);
+							
+								this.getApiCall(artistURL)
+								.subscribe(RES =>
+									{
+										console.log(RES);
+										if(JSON.parse(JSON.stringify(RES)).type != 'error')
+											this.artistsInfo.push(JSON.parse(JSON.stringify(RES)).message);
+
+									});
+							}
+						}
+						console.log("AC: " + artistCount);
+						if(artistCount <= 1)
+						{
+							
+							this.disableArrows(true);
+							if (artistCount == 0)
+							{
+								this.noArtistsFound = true;
+								this.isMusicRelated = false;
+							}
+						}
+						else
+						{
+							this.disableArrows(false);
+						}
 					}
 				}
-				if(artistCount <= 1)
-				{
-					this.disableArrows(true);
-					if (artistCount == 0)
-						this.noArtistsFound = true;
-				}
-				else
-					this.disableArrows(false);
-				
 			});
 		
 		
@@ -334,39 +356,53 @@ export class SearchComponent implements OnInit
 		this.getApiCall(venueURL)
 		.subscribe(res =>
 			{
-				var name = JSON.parse(JSON.stringify(res)).venueName;
-				var address = JSON.parse(JSON.stringify(res)).venueAddress;
-				var city = JSON.parse(JSON.stringify(res)).venueCity;
-				let latLongURL = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyACnXuRfgeAz9JQnggOf3EJ6L6N1pgCeag&address=";
-				latLongURL += encodeURIComponent(name+", "+address+", "+city);
-				fetch(latLongURL)
-				.then(RES => RES.json())
-				.then(DATA => {
-					this.showGoogleMaps = false;
-					if('results' in DATA)
-						if(DATA['results'].length > 0)
-							if('geometry' in DATA['results'][0])
-								if('location' in DATA['results'][0]['geometry'])
-								{
-									var lat = 0, lng = 0;
-									if('lat' in DATA['results'][0]['geometry']['location'])
-									{
-										lat = parseFloat(DATA['results'][0]['geometry']['location']['lat']);
-										this.showGoogleMaps = true;
-									}
-									if('lat' in DATA['results'][0]['geometry']['location'])
-									{
-										lng = parseFloat(DATA['results'][0]['geometry']['location']['lng']);
-										this.showGoogleMaps = true;
-									}
-									this.mapInitializer(lat, lng);
-								}
+				if('type' in res)
+				{
+					if(res.type == 'error')
+					{
+						this.noVenueDataFound = true;
+						this.isVenueDataFound = false;
+					}
+					else
+					{
+						this.noVenueDataFound = false;
+						this.isVenueDataFound = true;
+						this.venueDetails = JSON.parse(JSON.stringify(res)).message;
 
-				});
+						var name = JSON.parse(JSON.stringify(res)).message.venueName;
+						var address = JSON.parse(JSON.stringify(res)).message.venueAddress;
+						var city = JSON.parse(JSON.stringify(res)).message.venueCity;
+						
+						let latLongURL = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyACnXuRfgeAz9JQnggOf3EJ6L6N1pgCeag&address=";
+						latLongURL += encodeURIComponent(name+", "+address+", "+city);
+						
+						fetch(latLongURL)
+						.then(RES => RES.json())
+						.then(DATA => {
+							this.showGoogleMaps = false;
+							if('results' in DATA)
+								if(DATA['results'].length > 0)
+									if('geometry' in DATA['results'][0])
+										if('location' in DATA['results'][0]['geometry'])
+										{
+											var lat = 0, lng = 0;
+											if('lat' in DATA['results'][0]['geometry']['location'])
+											{
+												lat = parseFloat(DATA['results'][0]['geometry']['location']['lat']);
+												this.showGoogleMaps = true;
+											}
+											if('lat' in DATA['results'][0]['geometry']['location'])
+											{
+												lng = parseFloat(DATA['results'][0]['geometry']['location']['lng']);
+												this.showGoogleMaps = true;
+											}
+											this.mapInitializer(lat, lng);
+										}
 
-				this.venueDetails = res;
-				//localStorage.setItem('venueDetails', JSON.stringify(res));
-				this.isVenueDataFound = true;
+						});
+
+					}
+				}
 			});
 	}
 	mapInitializer(lat: number, lng: number) {
@@ -390,14 +426,17 @@ export class SearchComponent implements OnInit
 		this.isVenueDataFound = false;
 
 		const location = document.getElementById('location') as HTMLInputElement;
-		const distance = document.getElementById('distance') as HTMLInputElement | null;
+		const distance = document.getElementById('distance') as HTMLInputElement;
 		const category = document.getElementById('category') as HTMLInputElement | null;
+
+		const finalDistance = distance?.value == '' ? 10 : distance?.value;
+		console.log("FD: " + finalDistance);
 		
 		var loc = submitForm(location?.value);
 
 		var url = this.baseURL + "/searchEvents?";
 		url += 'keyword=' + encodeURIComponent(this.selectedKeyword);
-		url += '&distance=' + distance?.value;
+		url += '&distance=' + finalDistance;
 		url += '&category=' + category?.value;
 		url += '&location=' + encodeURIComponent(loc);
 
