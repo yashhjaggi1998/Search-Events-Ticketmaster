@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -44,11 +45,11 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     MatAutocompleteModule,
     RouterModule.forRoot([
-      {path: '', component: SearchComponent},
+      {path: 'search', component: SearchComponent},
       {path: 'favorites', component: FavoritesComponent},
-    ]),
+    ], {useHash: true}),
   ],
-  providers: [],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
