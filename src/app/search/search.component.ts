@@ -23,6 +23,7 @@ const API_KEY = "e8067b53"
 
 export class SearchComponent implements OnInit 
 {
+	//need to change this every now and then
 	baseURL = "https://ass8-events.uc.r.appspot.com/server";
 	//baseURL = "http://localhost:8080/server";
 	events: any = [];
@@ -332,20 +333,21 @@ export class SearchComponent implements OnInit
 							}
 						}
 						console.log("AC: " + artistCount);
-						if(artistCount <= 1)
+						if (artistCount == 0)
+						{
+							this.noArtistsFound = true;
+							this.isMusicRelated = false;
+						}
+						/*if(artistCount <= 1)
 						{
 							
 							this.disableArrows(true);
-							if (artistCount == 0)
-							{
-								this.noArtistsFound = true;
-								this.isMusicRelated = false;
-							}
+							
 						}
 						else
 						{
 							this.disableArrows(false);
-						}
+						}*/
 					}
 				}
 			});

@@ -168,8 +168,8 @@
                                     <h5 *ngIf="eventDetails.eventDate">Date</h5>
                                     <label *ngIf="eventDetails.eventDate" class="eventsText">{{eventDetails.eventDate}}</label>
 
-                                    <h5 *ngIf="eventDetails.eventDate">Artist/Team</h5>
-                                    <label  *ngIf="eventDetails.eventDate" class="eventsText">{{eventDetails.artistString}}</label>
+                                    <h5 *ngIf="eventDetails.artistString">Artist/Team</h5>
+                                    <label  *ngIf="eventDetails.artistString" class="eventsText">{{eventDetails.artistString}}</label>
 
                                     <h5 *ngIf="eventDetails.eventVenue">Venue</h5>
                                     <label *ngIf="eventDetails.eventVenue" class="eventsText">{{eventDetails.eventVenue}}</label>
@@ -181,7 +181,9 @@
                                     <label *ngIf="eventDetails.priceRanges" class="eventsText">{{eventDetails.priceRanges}} USD</label>
                                     
                                     <h5 *ngIf="eventDetails.ticketStatus">Ticket Status</h5>
-                                    <label *ngIf="eventDetails.ticketStatus" class="eventsText" style="padding: 5px 15px 5px 15px; border-radius: 10px;" [ngStyle]="{'background-color': eventDetails.ticketStatusColor}">{{eventDetails.ticketStatus}}</label>
+                                    <label *ngIf="eventDetails.ticketStatus" class="eventsText" style="padding: 5px 15px 5px 15px; border-radius: 10px;" [ngStyle]="{'background-color': eventDetails.ticketStatusColor}">
+                                        {{eventDetails.ticketStatus}}
+                                    </label>
 
                                     <h5 *ngIf="eventDetails.ticketURL">Buy Ticket At:</h5>
                                     <a href={{eventDetails.ticketURL}} target="_blank" class="eventsText" *ngIf="eventDetails.ticketURL">Ticketmaster</a>
@@ -220,7 +222,7 @@
                             </div>
                             <div class="col-md-2"></div>
                         </div>
-                        <ngb-carousel class="container" *ngIf="isMusicRelated">
+                        <ngb-carousel class="container" *ngIf="isMusicRelated" [showNavigationArrows]="!( artistsInfo.length <= 1 )">
                             <ng-template ngbSlide *ngFor="let artist of artistsInfo">
                                 <div class="wrapper container">
                                     <div class="container">
@@ -231,32 +233,32 @@
                                                         
                                                         <div class="container row text-center" style="padding-top: 2vw;">
                                                             <div class="col-md-3">
-                                                                <img style="border-radius: 20vw" src={{artist.imageURL}} class="img-fluid">
-                                                                <h5 class="greenText" style="font-weight: bold;">{{artist.name}}</h5>
+                                                                <img *ngIf="artist.imageURL" style="border-radius: 20vw" src={{artist.imageURL}} class="img-fluid">
+                                                                <h5 *ngIf="artist.name" class="greenText" style="font-weight: bold;">{{artist.name}}</h5>
                                                             </div>
                                                             <div class="col-md-3" style="margin-bottom: 20px;">
                                                                 <div class="artistInfo">
-                                                                    <h5 class="greenText">Popularity</h5>
-                                                                    <div class="text-center spinner">
+                                                                    <h5 *ngIf="artist.popularity" class="greenText">Popularity</h5>
+                                                                    <div *ngIf="artist.popularity" class="text-center spinner">
                                                                         <mat-progress-spinner [diameter]="40" color="warn" mode="determinate" value={{artist.popularity}}></mat-progress-spinner>
                                                                     </div>
                                                                     <div style="margin-top: -32px;">
-                                                                        <label>{{artist.popularity}}</label>
+                                                                        <label *ngIf="artist.popularity">{{artist.popularity}}</label>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="col-md-3" style="margin-bottom: 20px;">
                                                                 <div class="artistInfo">
-                                                                    <h5 class="greenText">Followers</h5>
-                                                                    <label>{{artist.followersCount}}</label>
+                                                                    <h5 *ngIf="artist.followersCount" class="greenText">Followers</h5>
+                                                                    <label *ngIf="artist.followersCount">{{artist.followersCount}}</label>
                                                                 </div>
                                                             </div>
                                                             
                                                             <div class="col-md-3" style="margin-bottom: 20px;">
                                                                 <div class="artistInfo">
-                                                                    <h5 class="greenText">Spotify Link</h5>
-                                                                    <a style="color: green; font-size: 35px;" target="_blank" href={{artist.spotifyURL}} class="bi bi-spotify"></a>
+                                                                    <h5 *ngIf="artist.spotifyURL" class="greenText">Spotify Link</h5>
+                                                                    <a *ngIf="artist.spotifyURL" style="color: green; font-size: 35px;" target="_blank" href={{artist.spotifyURL}} class="bi bi-spotify"></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -293,7 +295,7 @@
                             <div class="col-md-2"></div>
                             <div class="col-md-8" style="padding-left: 50px; padding-right: 50px;">
                                 <div class="noResultsFound text-center">
-                                    <h4>No event details to show</h4>
+                                    <h4>No venue details to show</h4>
                                 </div>
                             </div>
                             <div class="col-md-2"></div>
@@ -305,8 +307,8 @@
                                     <h5 *ngIf="venueDetails.venueName">Name</h5>
                                     <label *ngIf="venueDetails.venueName">{{venueDetails.venueName}}</label>
 
-                                    <h5 *ngIf="venueDetails.venueAddress">Address</h5>
-                                    <label *ngIf="venueDetails.venueAddress">{{venueDetails.venueAddress}}, {{venueDetails.venueCity}}</label>
+                                    <h5 *ngIf="venueDetails.venueAddress || venueDetails.venueCity">Address</h5>
+                                    <label *ngIf="venueDetails.venueAddress || venueDetails.venueCity">{{venueDetails.venueAddress}}, {{venueDetails.venueCity}}</label>
 
                                     <h5 *ngIf="venueDetails.venuePhoneNumber">Phone Number</h5>
                                     <label *ngIf="venueDetails.venuePhoneNumber">{{venueDetails.venuePhoneNumber}}</label>                                        
