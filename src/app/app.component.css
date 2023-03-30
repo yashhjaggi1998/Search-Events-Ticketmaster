@@ -21,7 +21,7 @@
     text-decoration: none;
     line-height: 20px;
 }
-.activeButtonFavorites, .activeButtonSearch 
+.activeButton
 {
     border: solid 2px white;
     border-radius: 15px;

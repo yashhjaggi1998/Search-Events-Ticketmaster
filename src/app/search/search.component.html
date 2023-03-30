@@ -1,5 +1,12 @@
-<div class="container">
+<nav class="navbar-inverse container-fluid">
+	<div class="navbar-right">
+		<a routerLink="/" routerLinkActive="activeButton" ariaCurrentWhenActive="page">Search</a>
+	  	<a routerLink="/favorites" routerLinkActive="noActiveButton" ariaCurrentWhenActive="page">Favorites</a>
+	</div>
+</nav>
+<div class="container" style="margin-top: 50px;">
     
+    <!--Form-->
     <div class="row">
         <div class="form-group col-md-3"></div>
         
@@ -83,6 +90,7 @@
 
         <div class="form-group col-md-3"></div>
     </div>
+    <!-- End of Form-->
     
     <!-- Results Table-->
     <div class="row">
