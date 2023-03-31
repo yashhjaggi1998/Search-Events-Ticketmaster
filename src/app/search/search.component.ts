@@ -154,7 +154,7 @@ export class SearchComponent implements OnInit
 		else
 		{
 			//raise alert
-			alert("Removed from Favorites!");
+			alert("Event Removed from Favorites!");
 
 			//make UI changes
 			this.favoriteText = "favorite_border";
@@ -216,24 +216,20 @@ export class SearchComponent implements OnInit
 		else
 			this.carouselConfig.showNavigationArrows = false;
 	}
+
+
 	rowClick(id: string, venueName: string)
 	{	
-		//reset these variables
 		this.artistsInfo = [];
-
-		this.isTabsDataFound = true; //table make display
-		this.isEventsDataFound = false;	//results Table no display
-		
 
 		var eventURL = this.baseURL + "/eventDetails?id=" + id;
 		
-		this.getApiCall(eventURL)
-		.subscribe(RES =>
+		fetch(eventURL)
+		.then(RESPONSE => RESPONSE.json())
+		.then(RES =>
 			{
-				console.log("Event Details" + RES);
 				if('type' in RES && 'message' in RES)
 				{	
-					this.isEventDetailsDataFound = true;
 					if(RES.type == 'error')
 					{
 						this.noEventDetailsDataFound = true;
@@ -243,8 +239,8 @@ export class SearchComponent implements OnInit
 					}
 					else
 					{
-						this.isEventDetailsDataFound = true;
 						this.noEventDetailsDataFound = false;
+						this.isEventDetailsDataFound = true;
 						
 						this.eventDetails = RES['message'];
 						
@@ -292,12 +288,14 @@ export class SearchComponent implements OnInit
 						this.eventDetails['artistString'] = artistString;	
 						
 						//get favorite icon ready
-						const favorite = document.getElementById('favorite') as HTMLInputElement;
 						var isAlreadySelected = false;
 						var favorites = JSON.parse(localStorage.getItem("favorite") || '[]');
 						for(let fav of favorites)
 							if(fav?.eventId == this.eventDetails?.eventId)
+							{
 								isAlreadySelected = true;
+								break;
+							}
 						
 						if(isAlreadySelected)
 						{
@@ -311,7 +309,7 @@ export class SearchComponent implements OnInit
 						}
 					
 
-						//populate spotify artist information.
+						//ARTISTS TAB Population
 						let artistCount = 0;
 						for(let artist of this.eventDetails.eventArtist)
 						{
@@ -320,93 +318,91 @@ export class SearchComponent implements OnInit
 								this.isMusicRelated = true;
 								this.noArtistsFound = false;
 								artistCount++;
+								
 								var artistURL = this.baseURL + "/artistInfo?artist=" + encodeURIComponent(artist.artistName);
-							
-								this.getApiCall(artistURL)
-								.subscribe(RES =>
+								fetch(artistURL)
+								.then(res => res.json())
+								.then(RES =>
 									{
-										console.log(RES);
 										if(JSON.parse(JSON.stringify(RES)).type != 'error')
 											this.artistsInfo.push(JSON.parse(JSON.stringify(RES)).message);
 
 									});
 							}
 						}
-						console.log("AC: " + artistCount);
 						if (artistCount == 0)
 						{
-							this.noArtistsFound = true;
 							this.isMusicRelated = false;
+							this.noArtistsFound = true;
 						}
-						/*if(artistCount <= 1)
-						{
-							
-							this.disableArrows(true);
-							
-						}
-						else
-						{
-							this.disableArrows(false);
-						}*/
+						//reorder artistsinfo
 					}
 				}
-			});
-		
-		
-		
-		var venueURL = this.baseURL + "/venueDetails?venueName=" + encodeURIComponent(venueName);
-		this.getApiCall(venueURL)
-		.subscribe(res =>
-			{
-				if('type' in res)
-				{
-					if(res.type == 'error')
+
+
+				var venueURL = this.baseURL + "/venueDetails?venueName=" + encodeURIComponent(venueName);
+				fetch(venueURL)
+				.then(RESPONSE => RESPONSE.json())
+				.then(res =>
 					{
-						this.noVenueDataFound = true;
-						this.isVenueDataFound = false;
-					}
-					else
-					{
-						this.noVenueDataFound = false;
-						this.isVenueDataFound = true;
-						this.venueDetails = JSON.parse(JSON.stringify(res)).message;
+						if('type' in res)
+						{
+							if(res.type == 'error')
+							{
+								this.noVenueDataFound = true;
+								this.isVenueDataFound = false;
+							}
+							else
+							{
+								this.noVenueDataFound = false;
+								this.isVenueDataFound = true;
+								this.venueDetails = JSON.parse(JSON.stringify(res)).message;
 
-						var name = JSON.parse(JSON.stringify(res)).message.venueName;
-						var address = JSON.parse(JSON.stringify(res)).message.venueAddress;
-						var city = JSON.parse(JSON.stringify(res)).message.venueCity;
-						
-						let latLongURL = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyACnXuRfgeAz9JQnggOf3EJ6L6N1pgCeag&address=";
-						latLongURL += encodeURIComponent(name+", "+address+", "+city);
-						
-						fetch(latLongURL)
-						.then(RES => RES.json())
-						.then(DATA => {
-							this.showGoogleMaps = false;
-							if('results' in DATA)
-								if(DATA['results'].length > 0)
-									if('geometry' in DATA['results'][0])
-										if('location' in DATA['results'][0]['geometry'])
-										{
-											var lat = 0, lng = 0;
-											if('lat' in DATA['results'][0]['geometry']['location'])
-											{
-												lat = parseFloat(DATA['results'][0]['geometry']['location']['lat']);
-												this.showGoogleMaps = true;
-											}
-											if('lat' in DATA['results'][0]['geometry']['location'])
-											{
-												lng = parseFloat(DATA['results'][0]['geometry']['location']['lng']);
-												this.showGoogleMaps = true;
-											}
-											this.mapInitializer(lat, lng);
-										}
+								var name = JSON.parse(JSON.stringify(res)).message.venueName;
+								var address = JSON.parse(JSON.stringify(res)).message.venueAddress;
+								var city = JSON.parse(JSON.stringify(res)).message.venueCity;
+								
+								let latLongURL = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyACnXuRfgeAz9JQnggOf3EJ6L6N1pgCeag&address=";
+								latLongURL += encodeURIComponent(name+", "+address+", "+city);
+								
+								fetch(latLongURL)
+								.then(RES => RES.json())
+								.then(DATA => {
+									this.showGoogleMaps = false;
+									if('results' in DATA)
+										if(DATA['results'].length > 0)
+											if('geometry' in DATA['results'][0])
+												if('location' in DATA['results'][0]['geometry'])
+												{
+													var lat = 0, lng = 0;
+													if('lat' in DATA['results'][0]['geometry']['location'])
+													{
+														lat = parseFloat(DATA['results'][0]['geometry']['location']['lat']);
+														this.showGoogleMaps = true;
+													}
+													if('lat' in DATA['results'][0]['geometry']['location'])
+													{
+														lng = parseFloat(DATA['results'][0]['geometry']['location']['lng']);
+														this.showGoogleMaps = true;
+													}
+													this.mapInitializer(lat, lng);
+												}
 
-						});
+								});
 
-					}
-				}
+							}
+						}
+					});
+
+				this.isTabsDataFound = true; //table make display
+				this.isEventsDataFound = false;	//results Table no display
+			
+			
 			});
+	
 	}
+
+
 	mapInitializer(lat: number, lng: number) {
 		// the coordinates are created with the correct lat and lng. Not with 0, 0
 		const coordinates = new google.maps.LatLng(lat, lng);
@@ -432,7 +428,6 @@ export class SearchComponent implements OnInit
 		const category = document.getElementById('category') as HTMLInputElement | null;
 
 		const finalDistance = distance?.value == '' ? 10 : distance?.value;
-		console.log("FD: " + finalDistance);
 		
 		var loc = submitForm(location?.value);
 
@@ -443,8 +438,9 @@ export class SearchComponent implements OnInit
 		url += '&location=' + encodeURIComponent(loc);
 
 		//fetch events data
-		this.getApiCall(url)
-		.subscribe(res =>
+		fetch(url)
+		.then(RES => RES.json())
+		.then(res =>
 			{
 				//console.log(res);
 				if('type' in res)
@@ -461,8 +457,8 @@ export class SearchComponent implements OnInit
 						
 						if(this.events.length > 0)
 						{
-							this.isEventsDataFound = true;
 							this.noEventsDataFound = false;
+							this.isEventsDataFound = true;
 
 							for(let i=0; i < this.events.length-1; i++)
 							{

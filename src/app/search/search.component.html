@@ -316,7 +316,7 @@
                                     <label *ngIf="venueDetails.venueName">{{venueDetails.venueName}}</label>
 
                                     <h5 *ngIf="venueDetails.venueAddress || venueDetails.venueCity">Address</h5>
-                                    <label *ngIf="venueDetails.venueAddress || venueDetails.venueCity">{{venueDetails.venueAddress}}, {{venueDetails.venueCity}}</label>
+                                    <label *ngIf="venueDetails.venueAddress">{{venueDetails.venueAddress}},&nbsp;</label><label *ngIf="venueDetails.venueCity">{{venueDetails.venueCity}}</label>
 
                                     <h5 *ngIf="venueDetails.venuePhoneNumber">Phone Number</h5>
                                     <label *ngIf="venueDetails.venuePhoneNumber">{{venueDetails.venuePhoneNumber}}</label>                                        
