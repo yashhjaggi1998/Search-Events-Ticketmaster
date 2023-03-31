@@ -272,7 +272,7 @@
                                                         </div>
                                                         <div class="row" style="padding-bottom: 2vw;">
                                                             <div *ngIf="artist.coverImages[0]">
-                                                                <label class="greenText albumText">Albums featuring {{artist.name}}</label>
+                                                                <label class="greenText albumText">Album featuring {{artist.name}}</label>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <img class="img-fluid albumImg" src={{artist.coverImages[0]}} alt="Random first slide">
@@ -378,25 +378,25 @@
 
 </div>
 
-<div class="modal container" tabindex="-1" role="dialog" [ngStyle]="{'display': modalDisplay}">
+<div class="modal container" tabindex="-1" role="dialog" [ngStyle]="{'display': modalDisplay}" style="max-width: 1600px;">
     <div class="row modalRow">
         <div class="col-md-4"></div>
         
-        <div class="col-md-4 container">
-            <div class="container">
-                <div class="modalContent container">
-                    <h3>Event Venue</h3>
-                    <hr>
-                    <div class="my-google-map">
-                        <google-map [options]="mapOptions">
-                            <map-marker [position]="marker.getPosition()!"></map-marker>
-                        </google-map>
-                    </div>
-                    <div class="modalClose">
-                        <button class="btn btn-dark" (click)="closeModal()">Close</button>
-                    </div>
+        <div class="col-md-4 container text-center">
+            
+            <div class="modalContent container">
+                <h3 style="text-align: left;">Event Venue</h3>
+                <hr>
+                <div class="my-google-map">
+                    <google-map [options]="mapOptions">
+                        <map-marker [position]="marker.getPosition()!"></map-marker>
+                    </google-map>
+                </div>
+                <div class="modalClose" style="text-align: left;">
+                    <button class="btn btn-dark" (click)="closeModal()">Close</button>
                 </div>
             </div>
+            
         </div>
         
         <div class="col-md-4"></div>
