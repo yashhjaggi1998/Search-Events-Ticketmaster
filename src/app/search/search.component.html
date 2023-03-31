@@ -118,7 +118,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let event of events" (click)="rowClick(event.id, event.venue)" id="{{event.id}}">
+                        <tr *ngFor="let event of events" (click)="rowClick(event.id, event.venue)" id="{{event.id}}" class="tableRow">
                             <td>{{event.date}}</td>
                             <td><img src={{event.icon}}></td>
                             <td>{{event.name}}</td>

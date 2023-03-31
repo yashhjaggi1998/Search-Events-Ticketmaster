@@ -66,6 +66,10 @@
 {
     border-radius: 15px;
 }
+.tableRow:hover
+{
+    cursor: pointer;
+}
 .resultsTable
 {
     text-align: center;
